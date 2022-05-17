@@ -1,164 +1,209 @@
 <?php
 include ("includes/ini.php");
-?>
 
-<div class="row divisor_titulo" style="">
-    <label class="col-sm-12"><h3>Cadastro de Projetos</h3></label>
-</div>
+$titulo_pagina = "Cadastro de Projetos";
 
-<?php
 if (isset($_GET['m'])) {
     $m = $_GET['m'];
-    if ($m == '1') {
-        echo "<div class='alert alert-success' role='alert'>Registro gravado com sucesso!</div>";
-    }else if ($m == '2') {
-        echo "<div class='alert alert-danger' role='alert'>Registro não gravou!</div>";
-    }else if ($m == '3') {
-        echo "<div class='alert alert-danger' role='alert'>Registro excluído com sucesso!</div>";
-    }
+    mensRetorno($m);
 }
 
 ?>
-
-<form action="projetos_gra.php" method="post">
-
-    <div class="form-group row">
-        <label for="projeto" class="col-sm-2 col-form-label text-right"><b>Nome do Projeto</b></label>
-        <div class="col-sm-8">
-           <input type="text" name="projeto" class="form-control" required="required">
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6"><h1><?=$titulo_pagina?></h1></div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="painel.php">Home</a></li>
+                    <li class="breadcrumb-item active"><?=$titulo_pagina?></li>
+                </ol>
+            </div>
         </div>
-    </div>
+    </div><!-- /.container-fluid -->
+</section>
 
-    <div class="form-group row">
-        <label for="tipo" class="col-sm-2 col-form-label text-right"><b>Tipo</b></label>
-        <div class="col-sm-8">
-           <select class="form-control" name="tipo" required="required">
-               <option value=""></option>
-               <option value="interno">Interno</option>
-               <option value="externo">Requer contratação</option>
-            </select>
+<!-- Main content -->
+<section class="content">
+
+
+    <div class="card card-primary">
+        <div class="card-header">
+            <h3 class="card-title">Formulário de Cadastro de Projetos</h3>
         </div>
+        <form action="projetos_gra.php" method="post">
+            <div class="card-body">
+                
+                <div class="form-group row">
+                    <div class="col-sm-12">
+                        <label for="titulo">Título</label>
+                        <input type="text" class="form-control" id="titulo" name="titulo" placeholder="Título do Projeto" maxlength="255">
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col=sm-12">
+                        <label for="objeto">Objeto</label>
+                        <textarea class="form-control" name="objeto" required="required"></textarea>
+                    </div>
+                </div>
+                
+                <div class="form-group row">
+                    <div class="col-sm-4">
+                        <label for="secretaria">Secretaria</label>
+                        <select class="form-select" id="id_secretaria" name="id_secretaria" required="required">
+                            <option></option>
+                            <?php  
+                            $sql_secretaria = "SELECT * FROM secretarias WHERE ativo='s' ORDER BY secretaria";
+                            $result_secretaria = $conn->query($sql_secretaria);
+                            while ($row_secretaria=$result_secretaria->fetch_assoc()) {?>
+                                <option value="<?=$row_secretaria['id_secretaria']?>"><?=$row_secretaria['secretaria']?></option>
+                            <?php
+                            }
+                            ?>                            
+                        </select>
+                    </div>
+                    <div class="col-sm-2">
+                        <label for="id_tipo">Tipo</label>
+                        <select class="form-select" id="id_tipo" name="id_tipo" required="required">
+                            <option></option>
+                            <?php  
+                            $sql_tipo = "SELECT * FROM tipos WHERE ativo='s' ORDER BY tipo";
+                            $result_tipo = $conn->query($sql_tipo);
+                            while ($row_tipo=$result_tipo->fetch_assoc()) {?>
+                                <option value="<?=$row_tipo['id_tipo']?>"><?=$row_tipo['tipo']?></option>
+                            <?php
+                            }
+                            ?>                            
+                        </select>
+                    </div>                    
+                    <div class="col-sm-2">
+                        <label for="secretaria">Status</label>
+                        <select class="form-select" id="id_status" name="id_status" required="required">
+                            <option></option>
+                            <?php  
+                            $sql_status = "SELECT * FROM status WHERE ativo='s' ORDER BY status";
+                            $result_status = $conn->query($sql_status);
+                            while ($row_status=$result_status->fetch_assoc()) {?>
+                                <option value="<?=$row_status['id_status']?>"><?=$row_status['status']?></option>
+                            <?php
+                            }
+                            ?>                             
+                        </select>
+                    </div>
+                    <div class="col-sm-2">
+                        <label for="fone">Solicitante</label>
+                        <input type="text" class="form-control" id="solicitante" name="solicitante" placeholder="Nome do Solicitante" maxlength="60">
+                    </div>
+                    <div class="col-sm-2">
+                        <label for="secretaria">Responsável</label>
+                        <select class="form-select" id="id_resp" name="id_resp" required="required">
+                            <option></option>
+                            <?php  
+                            $sql_resp = "SELECT * FROM usuarios WHERE ativo='s' ORDER BY nome";
+                            $result_resp = $conn->query($sql_resp);
+                            while ($row_resp=$result_resp->fetch_assoc()) {?>
+                                <option value="<?=$row_resp['id']?>"><?=$row_resp['nome']?></option>
+                            <?php
+                            }
+                            ?>                             
+                        </select>
+                    </div>                                        
+                </div>
+
+                <div class="form-group row">
+                    <div class="col=sm-12">
+                        <label for="objeto">Observações</label>
+                        <textarea class="form-control" name="obs"></textarea>
+                    </div>
+                </div>                
+
+            </div>
+
+            <div class="card-footer">
+                <button type="submit" class="btn btn-primary">Gravar</button>
+            </div>
+        </form>
     </div>
 
-    <div class="form-group row">
-        <label for="secretaria" class="col-sm-2 col-form-label text-right"><b>Secretaria</b></label>
-        <div class="col-sm-8">
-           <select class="form-control" name="id_secretaria" required="required">
-               <option value=""></option>
-               <?php
-               $sql_secret = "SELECT * FROM secretarias WHERE ativo = 's' ORDER BY secretaria";
-               $result_secret = $conn->query($sql_secret);
-               while($row_secret = $result_secret->fetch_assoc()){
-               ?>   
-               <option value="<?=$row_secret['id_secretaria']?>"><?=$row_secret['secretaria']?></option>
-               <?php } ?>
-            </select>
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">Tabela de Projetos Cadastradas</h3>
         </div>
-    </div>
-
-    <div class="form-group row">
-        <label for="gestor" class="col-sm-2 col-form-label text-right"><b>Gestor</b></label>
-        <div class="col-sm-8">
-            <input type="text" name="gestor" class="form-control" required="required">
-        </div>
-    </div>
-
-    <div class="form-group row">
-        <label for="id_status" class="col-sm-2 col-form-label text-right"><b>Status</b></label>
-        <div class="col-sm-8">
-           <select class="form-control" name="id_status" required="required">
-               <?php
-               $sql_status = "SELECT * FROM status WHERE ativo = 's' ORDER BY id_status";
-               $result_status = $conn->query($sql_status);
-               while($row_status = $result_status->fetch_assoc()){
-               ?>   
-               <option value="<?=$row_status['id_status']?>"><?=$row_status['status']?></option>
-               <?php } ?>
-            </select>
-        </div>
-    </div>
-
-    <div class="form-group row">
-        <input type="submit" class="btn btn-success" value="Gravar">
-    </div>
-</form>
-
-<div class="card mb-3 container-fluid">
-    <div class="card-header">
-        <i class="fas fa-table"></i>
-        Cadastro de Projetos
-    </div>
-    <div class="card-body">
-        <div class="table-responsive">
-            <table id="example" class="table table-striped table-bordered" style="width:100%">
+        
+        <div class="card-body">
+            <table id="example1" class="table table-bordered table-striped">
                 <thead>
-                    <tr>
-                        <th>Código</th>
-                        <th>Projeto</th>
-                        <th>Tipo</th>
+                    <tr class="text-center">
+                        <th>ID</th>
+                        <th>Titulo</th>
+                        <th>Objeto</th>
                         <th>Secretaria</th>
-                        <th>Gestor</th>
+                        <th>Tipo</th>
                         <th>Status</th>
+                        <th>Solicitante</th>
+                        <th>Responsável</th>
+                        <th>Observações</th>
                         <th>Ações</th>
                     </tr>
                 </thead>
-                <tfoot>
-                    <tr>
-                        <th>Código</th>
-                        <th>Projeto</th>
-                        <th>Tipo</th>
-                        <th>Secretaria</th>
-                        <th>Gestor</th>
-                        <th>Status</th>
-                        <th>Ações</th>
-                    </tr>
-                </tfoot>
                 <tbody>
 
-                    <?php
-
-                    
-                    if($adm != 's'){
-                        $secret = " AND A.id_secretaria = $id_sec ";
-                    }else{
-                        $secret = "";
-                    }                    
-
-                    $sql = "SELECT A.id_projeto, A.projeto, A.tipo, A.gestor, B.sigla, C.status
-                            FROM projetos A, secretarias B, status C
-                            WHERE A.ativo = 's'
+                    <?php  
+                    $sql = "SELECT A.id_projeto, A.titulo, A.objeto, A.solicitante, A.obs, B.secretaria, C.tipo, D.status, D.fase, E.nome 
+                            FROM projetos A, secretarias B, tipos C, status D, usuarios E
+                            WHERE A.ativo = 's' 
                             AND A.id_secretaria = B.id_secretaria
-                            AND A.id_status = C.id_status
-                            $secret
-                            ORDER BY A.projeto
-                          ";
-
+                            AND A.id_tipo = C.id_tipo 
+                            AND A.id_status = D.id_status 
+                            AND A.id_resp = E.id
+                            ORDER BY A.data_cad";
                     $result = $conn->query($sql);
-                    while ($row = $result->fetch_assoc()) {
+                    while ($row=$result->fetch_assoc()) { 
+
+                        if($row['fase'] == 3){
+                            $cor = " style='background-color:#B0E0E6'";
+                        }else if($row['fase'] == 2){
+                            $cor = " style='background-color:#F5DEB3'";
+                        }else{
+                            $cor = "";
+                        }
+
 
                         ?>
-                        <tr>
-                            <td class="text-center"><?=$row['id_projeto']?></td>
-                            <td class="text-center"><?=$row['projeto']?></td>
-                            <td class="text-center"><?=strtoupper($row['tipo'])?></td>
-                            <td class="text-center"><?=$row['sigla']?></td>
-                            <td class="text-center"><?=$row['gestor']?></td>
-                            <td class="text-center"><?=$row['status']?></td>
-                            <td style="width: 200px">
-                                <a class="btn btn-primary" href="projetos_edi.php?id=<?=$row['id_projeto']?>">Editar</a>
+                    
+                    <tr <?=$cor?> >
+                        <td class="text-center"><?=$row['id_projeto']?></td>
+                        <td><?=$row['titulo']?></td>
+                        <td><?=$row['objeto']?></td>
+                        <td class="text-center"><?=$row['secretaria']?></td>
+                        <td class="text-center"><?=$row['tipo']?></td>
+                        <td class="text-center"><?=$row['status']?></td>
+                        <td><?=$row['solicitante']?></td>
+                        <td class="text-center"><?=$row['nome']?></td>
+                        <td class="text-center"><?=$row['obs']?></td>
+                        <td class="text-center">
+                            <div class="form-group row ">
+                                <div class="col-sm-6">
+                                    <a href="projetos_edi.php?id=<?=$row['id_projeto']?>" class="btn btn-secondary btn-sm" ><i class="fas fa-pen" style="font-size: 0.8em;"></i></a>
+                                </div>
+                                <div class="col-sm-6">
+                                    <a  href="javascript:if(confirm('Tem certeza que deseja excluir este registro?')){location.href='projetos_del.php?id=<?=$row['id_projeto']?>'}" class="btn btn-secondary btn-sm" ><i class="fas fa-trash" style="font-size: 0.8em;"></i></a>
+                                </div>
 
-                                <a class="btn btn-danger" href="javascript:if(confirm('Tem certeza que deseja excluir este registro?')){location.href='projetos_del.php?id=<?=$row['id_projeto']?>'}">Excluir</a>    
-                            </td>
-                        </tr>
+                            </div>
+                        </td>
+                    </tr>
 
-                    <?php } ?>
+                    <?php
+                    }
+                    ?>
 
                 </tbody>
             </table>
         </div>
     </div>
-    <div class="card-footer small text-muted">Atualizado hoje às <?=date('H:m')?></div>
-</div>
 
 <?php
 include ("includes/fim.php");

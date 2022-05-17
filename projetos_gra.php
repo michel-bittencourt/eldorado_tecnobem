@@ -1,34 +1,43 @@
 <?php
-include('includes/db.php');
+include ("includes/db.php");
+include ("includes/funcoes.php");
 
-$projeto        = $_POST['projeto'];
-$tipo           = $_POST['tipo'];
-$id_secretaria  = $_POST['id_secretaria'];
-$gestor         = $_POST['gestor'];
-$id_status      = $_POST['id_status'];
-
+$titulo         = filter_input(INPUT_POST, 'titulo'); 
+$objeto         = filter_input(INPUT_POST, 'objeto'); 
+$id_secretaria  = filter_input(INPUT_POST, 'id_secretaria'); 
+$id_tipo        = filter_input(INPUT_POST, 'id_tipo'); 
+$id_status      = filter_input(INPUT_POST, 'id_status'); 
+$solicitante    = filter_input(INPUT_POST, 'solicitante'); 
+$id_resp        = filter_input(INPUT_POST, 'id_resp'); 
+$obs            = filter_input(INPUT_POST, 'obs'); 
 
 $sql = "INSERT INTO projetos (
-                projeto,
-                tipo,
-                id_secretaria,
-                gestor,
-                id_status
-            ) VALUES (
-                '$projeto',
-                '$tipo',
-                '$id_secretaria',
-                '$gestor',
-                '$id_status'
-            )";
+            titulo,
+            objeto,
+            id_secretaria,
+            id_tipo,
+            id_status,
+            solicitante,
+            id_resp,
+            obs
+        ) VALUES (
+            '$titulo',
+            '$objeto',
+            '$id_secretaria',
+            '$id_tipo',
+            '$id_status',
+            '$solicitante',
+            '$id_resp',
+            '$obs'
+        )";
 
+$conn->query($sql);
+$id = mysqli_insert_id($conn);
 
-    $resultado = mysqli_query($conn, $sql);
-
-    if(mysqli_affected_rows($conn) != 0){
-        header("Location: projetos_cad.php?m=1");
-    }else{
-        header("Location: projetos_cad.php?m=2");
-    }
-
+if(mysqli_affected_rows($conn) != 0){
+    gravaLog("Projetos","Gravou",$id);
+    header("Location: projetos_cad.php?m=1");
+}else{
+    header("Location: projetos_cad.php?m=2");
+}
 ?>

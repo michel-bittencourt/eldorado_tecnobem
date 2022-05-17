@@ -1,100 +1,112 @@
-<?php
-include ("includes/ini.php");
+<?php 
+include("includes/ini.php");
+
+$titulo_pagina = "Página Inicial";
+
 ?>
 
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6"><h1><?=$titulo_pagina?></h1></div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="painel.php">Home</a></li>
+                    <li class="breadcrumb-item active"><?=$titulo_pagina?></li>
+                </ol>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+
+<!-- Main content -->
+<section class="content">
 
 
-<!-- Cadastros -->
+    <div class="card">
 
-<div class="row divisor_titulo" style="">
-    <label class="col-sm-12"><h3>Acesso Rápido</h3></label>
-</div>
-
-<div class="row">
-	<div class="col-sm-3">
-
-	</div> 
-	<div class="col-sm-3">
-
-	</div> 
-
-	<div class="col-sm-3">
-
-	</div> 
- 
-	<div class="col-sm-3">
-
-	</div> 
-</div>
-
-<div class="card mb-3 container-fluid">
-    <div class="card-header">
-        <i class="fa fa-table"></i>
-        Contratos vencendo nos próximos 90 dias
-    </div>
-    <div class="card-body">
-        <div class="table-responsive">
-            <table id="example" class="table table-striped table-bordered" style="width:100%">
+        <div class="card-header">
+            <h3 class="card-title">Meus Projetos</h3>
+        </div>
+        
+        <div class="card-body">
+            <table id="example1" class="table table-bordered table-striped">
                 <thead>
-                    <tr>
-                        <th>Código</th>
-                        <th>Secretaria</th>
-                        <th>Fornecedor</th>
+                    <tr class="text-center">
+                        <th>ID</th>
+                        <th>Titulo</th>
                         <th>Objeto</th>
-                        <th>Início</th>
-                        <th>Término</th>
-                        <th>Fiscal</th>
-                        <th>Permite Prorrogação</th>
-                        <th>Até quando</th>                        
+                        <th>Secretaria</th>
+                        <th>Tipo</th>
+                        <th>Status</th>
+                        <th>Solicitante</th>
+                        <th>Responsável</th>
+                        <th>Observações</th>
+                        <th>Ações</th>
                     </tr>
                 </thead>
                 <tbody>
 
-                    <?php
-
-                    if($adm != 's'){
-                        $secret = " AND A.id_secretaria = $id_sec ";
-                    }else{
-                        $secret = "";
-                    }
-
-
-                    $sql = "SELECT A.id_contrato, A.numero, A.objeto, A.data_ini, A.data_fim, A.fiscal, A.prorrog, A.data_prorrog, B.secretaria, C.fornec
-                            FROM contratos A, secretarias B, fornecedores C
-                            WHERE A.ativo = 's'
+                    <?php  
+                    $sql = "SELECT A.id_projeto, A.titulo, A.objeto, A.solicitante, A.obs, B.secretaria, C.tipo, D.status, D.fase, E.nome 
+                            FROM projetos A, secretarias B, tipos C, status D, usuarios E
+                            WHERE A.ativo = 's' 
                             AND A.id_secretaria = B.id_secretaria
-                            $secret
-                            AND A.id_fornec = C.id_fornec
-                            AND CURDATE() BETWEEN DATE_SUB(data_fim, INTERVAL 3 MONTH) AND data_fim
-                            ORDER BY A.data_fim
-                          ";
-
-                          //echo $sql;
-
+                            AND A.id_tipo = C.id_tipo 
+                            AND A.id_status = D.id_status 
+                            AND A.id_resp = E.id
+                            AND A.id_resp = $id_user
+                            ORDER BY A.data_cad";
                     $result = $conn->query($sql);
-                    while ($row = $result->fetch_assoc()) {
-                        ?>
-                        <tr class="text-center">
-                            <td><?=$row['id_contrato']?></td>
-                            <td><?=$row['secretaria']?></td>
-                            <td><?=$row['fornec']?></td>
-                            <td><?=$row['objeto']?></td>
-                            <td><?=date("d/m/Y",strtotime($row['data_ini']))?></td>
-                            <td style="color:red; font-weight: bold;"><?=date("d/m/Y",strtotime($row['data_fim']))?></td>
-                            <td><?=$row['fiscal']?></td>
-                            <td><?php if($row['prorrog'] == 's'){echo "SIM";}else{echo "NÃO";}?></td>
-                            <td><?=date("d/m/Y",strtotime($row['data_prorrog']))?></td>
-                        </tr>
+                    while ($row=$result->fetch_assoc()) { 
 
-                    <?php } ?>
+                        if($row['fase'] == 3){
+                            $cor = " style='background-color:#B0E0E6'";
+                        }else if($row['fase'] == 2){
+                            $cor = " style='background-color:#F5DEB3'";
+                        }else{
+                            $cor = "";
+                        }
+
+
+                        ?>
+                    
+                    <tr <?=$cor?> >
+                        <td class="text-center"><?=$row['id_projeto']?></td>
+                        <td><?=$row['titulo']?></td>
+                        <td><?=$row['objeto']?></td>
+                        <td class="text-center"><?=$row['secretaria']?></td>
+                        <td class="text-center"><?=$row['tipo']?></td>
+                        <td class="text-center"><?=$row['status']?></td>
+                        <td><?=$row['solicitante']?></td>
+                        <td class="text-center"><?=$row['nome']?></td>
+                        <td class="text-center"><?=$row['obs']?></td>
+                        <td class="text-center">
+                            <div class="form-group row ">
+                                <div class="col-sm-6">
+                                    <a href="projetos_edi.php?id=<?=$row['id_projeto']?>" class="btn btn-secondary btn-sm" ><i class="fas fa-pen" style="font-size: 0.8em;"></i></a>
+                                </div>
+                                <div class="col-sm-6">
+                                    <a  href="javascript:if(confirm('Tem certeza que deseja excluir este registro?')){location.href='projetos_del.php?id=<?=$row['id_projeto']?>'}" class="btn btn-secondary btn-sm" ><i class="fas fa-trash" style="font-size: 0.8em;"></i></a>
+                                </div>
+
+                            </div>
+                        </td>
+                    </tr>
+
+                    <?php
+                    }
+                    ?>
 
                 </tbody>
             </table>
-        </div>
-    </div>
-    <div class="card-footer small text-muted">Atualizado hoje às <?=date('H:m')?></div>
-</div>
 
-<?php
-include ("includes/fim.php");
+        </div>
+    </div>    
+
+</section>
+
+<?php 
+include("includes/fim.php");
 ?>

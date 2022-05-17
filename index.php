@@ -1,62 +1,61 @@
 <!DOCTYPE html>
-<html lang="pt-br">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- As 3 meta tags acima *devem* vir em primeiro lugar dentro do `head`; qualquer outro conteúdo deve vir *após* essas tags -->
-    <title>Comunica</title>
+<html lang="pt-BR">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Prefeitura de Eldorado do Sul || Painel de Controle</title>
 
-    <!-- Bootstrap -->
-    <link href="css/bootstrap.min.css" rel="stylesheet">
-    <link href="css/estilo.css" rel="stylesheet">
-    <!-- HTML5 shim e Respond.js para suporte no IE8 de elementos HTML5 e media queries -->
-    <!-- ALERTA: Respond.js não funciona se você visualizar uma página file:// -->
-    <!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    <![endif]-->
-  </head>
-  <body>
-    <div class="container">
-      <div class="row content">
-        <div class="col-sm-12 sidenav">
-
-
-          <?php require_once("dinamico/alert.php"); ?>
-
-          <form action="autenticar.php" method="post" >
-            <div class="imgcontainer">
-              <img src="img/comunica.png" style="width:100px">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+        <link rel="stylesheet" href="./plugins/fontawesome-free/css/all.min.css">
+        <link rel="stylesheet" href="./plugins/icheck-bootstrap/icheck-bootstrap.min.css">
+        <link rel="stylesheet" href="./dist/css/adminlte.min.css">
+    </head>
+    <body class="hold-transition login-page">
+        
+        <div class="login-box">
+            
+            <div class="login-logo">
+                <img src="./dist/img/logo_peq.png">
+                <h1>Prefeitura de Eldorado do Sul</h1>
             </div>
+            
+            <div class="card">
+                <div class="card-body login-card-body">
+                    <p class="login-box-msg">Informe seus dados de acesso</p>
 
-            <div class="container">
-              <label><b>Usuário</b></label>
-              <input type="text" placeholder="Entre com Usuário" name="inputEmail" required>
+                    <form action="autentica.php" method="post">
+                        <div class="input-group mb-3">
+                            <input type="text" class="form-control" name="user" placeholder="Usuário">
+                            <div class="input-group-append">
+                                <div class="input-group-text">
+                                    <span class="fas fa-user"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="input-group mb-3">
+                            <input type="password" class="form-control" name="pass" placeholder="Senha">
+                            <div class="input-group-append">
+                                <div class="input-group-text">
+                                    <span class="fas fa-lock"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-8">
 
-              <label><b>Senha</b></label>
-              <input type="password" placeholder="Entre com a Senha" name="inputPass" required>
+                            </div>
+                            <div class="col-4">
+                                <button type="submit" class="btn btn-primary btn-block">Enviar</button>
+                            </div>
+                        </div>
+                    </form>
 
-              <button type="submit" class="btn btn-primary">Login</button>
-              <label>
-                <input type="checkbox" checked="checked">Gravar senha
-              </label>
+                </div>
             </div>
-
-            <div class="container" style="background-color:#f1f1f1">
-              <button type="button" class="cancelbtn">Cancelar</button>
-              <span class="psw">Esqueceu a <a href="#">senha</a>?</span>
-            </div>
-          </form>
         </div>
-      </div>
 
-    </div>
-
-
-    <!-- jQuery (obrigatório para plugins JavaScript do Bootstrap) -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-    <!-- Inclui todos os plugins compilados (abaixo), ou inclua arquivos separadados se necessário -->
-    <script src="js/bootstrap.min.js"></script>
-  </body>
+        <script src="./plugins/jquery/jquery.min.js"></script>
+        <script src="./plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+        <script src="./dist/js/adminlte.min.js"></script>
+    </body>
 </html>

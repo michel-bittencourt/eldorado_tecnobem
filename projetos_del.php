@@ -1,20 +1,20 @@
 <?php
 include('includes/db.php');
+include ("includes/funcoes.php");
 
-$id         = $_GET['id'];
+$id = $_GET['id'];
 
-
-$sql = "UPDATE projetos SET 
+$sql = "UPDATE secretarias SET 
                 ativo    = 'n'
-        WHERE id_projeto = $id ";
+        WHERE id_secretaria = $id ";
 
+$conn->query($sql);
 
-    $resultado = mysqli_query($conn, $sql);
-
-    if(mysqli_affected_rows($conn) != 0){
-        header("Location: projetos_cad.php?m=3");
-    }else{
-        header("Location: projetos_cad.php?m=2");
-    }
+if(mysqli_affected_rows($conn) != 0){
+    gravaLog("Secretarias","Excluiu",$id);
+    header("Location: secretarias_cad.php?m=3");
+}else{
+    header("Location: secretarias_cad.php?m=2");
+}
 
 ?>

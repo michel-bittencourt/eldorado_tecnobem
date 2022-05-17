@@ -1,37 +1,37 @@
 <?php
-include('includes/db.php');
+include ("includes/db.php");
+include ("includes/funcoes.php");
 
-$secretaria = $_POST['secretaria'];
-$sigla      = $_POST['sigla'];
-$fone       = $_POST['fone'];
-$endereco   = $_POST['endereco'];
-$gestor     = $_POST['gestor'];
-$email      = $_POST['email'];
-
+$secretaria     = filter_input(INPUT_POST, 'secretaria'); 
+$sigla          = strtoupper(filter_input(INPUT_POST, 'sigla')); 
+$fone           = filter_input(INPUT_POST, 'fone'); 
+$endereco       = filter_input(INPUT_POST, 'endereco'); 
+$gestor         = filter_input(INPUT_POST, 'gestor'); 
+$email          = filter_input(INPUT_POST, 'email'); 
 
 $sql = "INSERT INTO secretarias (
-                secretaria,
-                sigla,
-                fone,
-                endereco,
-                gestor,
-                email
-            ) VALUES (
-                '$secretaria',
-                '$sigla',
-                '$fone',
-                '$endereco',
-                '$gestor',
-                '$email'
-            )";
+            secretaria,
+            sigla,
+            fone,
+            endereco,
+            gestor,
+            email
+        ) VALUES (
+            '$secretaria',
+            '$sigla',
+            '$fone',
+            '$endereco',
+            '$gestor',
+            '$email'
+        )";
 
+$conn->query($sql);
+$id = mysqli_insert_id($conn);
 
-    $resultado = mysqli_query($conn, $sql);
-
-    if(mysqli_affected_rows($conn) != 0){
-        header("Location: secretarias_cad.php?m=1");
-    }else{
-        header("Location: secretarias_cad.php?m=2");
-    }
-
+if(mysqli_affected_rows($conn) != 0){
+    gravaLog("Secretarias","Gravou",$id);
+    header("Location: secretarias_cad.php?m=1");
+}else{
+    header("Location: secretarias_cad.php?m=2");
+}
 ?>
